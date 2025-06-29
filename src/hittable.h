@@ -8,6 +8,15 @@ class hit_record {
         point3 p;
         vec3 normal;
         double t;
+        bool front_face;
+
+        void set_face_normal(const ray& r, const vec3& outward_normal) {
+            // Sets the hit record normal vector
+            // NOTE: the parameter 'outward_normal' is assumed to have unit length
+
+            front_face = dot(r.direction(), outward_normal) < 0; // if dot product is +, ray is inside/not front
+            normal = front_face ? outward_normal : -outward_normal; // if front face keep normal, otherwise flip direction
+        }
 };
 
 class hittable {
