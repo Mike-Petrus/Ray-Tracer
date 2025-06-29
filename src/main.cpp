@@ -6,16 +6,16 @@
 
 double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = center - r.origin();
-    double a = dot(r.direction(), r.direction());
-    double b = -2.0 * dot(r.direction(), oc);
-    double c = dot(oc, oc) - radius*radius;
-    double discriminant = b*b - 4*a*c;
+    double a = r.direction().length_squared(); // Same as dir dot dir
+    double h = dot(r.direction(), oc);
+    double c = oc.length_squared() - radius*radius;
+    double discriminant = h*h - a*c;
 
     if (discriminant < 0) {
         return -1.0;
     }
     else {
-        return (-b - std::sqrt(discriminant)) / (2.0 * a);
+        return (h - std::sqrt(discriminant)) / a;
     }
 }
 
