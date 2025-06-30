@@ -26,15 +26,15 @@ class hittable_list : public hittable {
 
         // For a given ray, find if it hits any object in our list
         // If it it hits multiple, return the closest one
-        bool hit(const ray& r, double ray_tmin, double ray_tmax, hit_record& rec) const override {
+        bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             hit_record temp_rec;
             bool hit_anything = false;
-            double closest_so_far = ray_tmax;
+            double closest_so_far = ray_t.max;
 
             // For each object, call hit() and test ray
             for (const auto& object :objects) {
 
-                if (object->hit(r, ray_tmin, closest_so_far, temp_rec)) {
+                if (object->hit(r, interval(ray_t.min, closest_so_far), temp_rec)) {
 
                     // If we get a hit closer than record, update closest dist, update hit record
                     hit_anything = true;
