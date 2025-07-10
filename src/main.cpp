@@ -10,17 +10,25 @@ int main()
     // World
     hittable_list world;
 
-    shared_ptr material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    shared_ptr material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
-    shared_ptr material_left = make_shared<dielectric>(1.50);
-    shared_ptr material_bubble = make_shared<dielectric>(1.00 / 1.50);
-    shared_ptr material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+    // shared_ptr material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    // shared_ptr material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
+    // shared_ptr material_left = make_shared<dielectric>(1.50);
+    // shared_ptr material_bubble = make_shared<dielectric>(1.00 / 1.50);
+    // shared_ptr material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
 
-    world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100, material_ground));
-    world.add(make_shared<sphere>(point3(0.0, 0.0, -1.2), 0.5, material_center));
-    world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
-    world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.4, material_bubble));
-    world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+    // world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100, material_ground));
+    // world.add(make_shared<sphere>(point3(0.0, 0.0, -1.2), 0.5, material_center));
+    // world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+    // world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.4, material_bubble));
+    // world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+    double R = std::cos(pi/4);
+
+    shared_ptr material_left = make_shared<lambertian>(color(0, 0, 1));
+    shared_ptr material_right = make_shared<lambertian>(color(1, 0, 0));
+
+    world.add(make_shared<sphere>(point3(-R, 0, -1), R, material_left));
+    world.add(make_shared<sphere>(point3(R, 0, -1), R, material_right));
 
     // Camera
     camera cam;
@@ -29,6 +37,8 @@ int main()
     cam.image_width = 400;
     cam.samples_per_pixel = 100;
     cam.max_depth = 50;
+
+    cam.v_fov = 90;
 
     // Render
     cam.render(world);

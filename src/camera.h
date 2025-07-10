@@ -11,6 +11,8 @@ class camera {
         int samples_per_pixel = 10; // Count of random samples for each pixel
         int max_depth = 10;         // Maximum number of ray bounces in scene
 
+        double v_fov = 90;          // Vertical view angle (field of view)
+
         void render(const hittable& world) {
             initialize();
 
@@ -54,7 +56,9 @@ class camera {
 
             // Determine viewport dimensions
             double focal_length = 1.0;
-            double viewport_height = 2.0;
+            double theta = degrees_to_radians(v_fov);
+            double h = std::tan(theta / 2);
+            double viewport_height = 2.0 * h * focal_length;
             double viewport_width = viewport_height * (double(image_width)/image_height);
             
         
