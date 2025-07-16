@@ -6,7 +6,14 @@
 
 class sphere : public hittable {
     public:
-        sphere (const point3& center, double radius, shared_ptr<material> mat) : center(center), radius(std::fmax(0, radius)), mat(mat) {}
+
+        // Stationary Sphere
+        sphere (const point3& center, double radius, shared_ptr<material> mat) : center(center), radius(std::fmax(0, radius)), mat(mat) {
+            vec3 rvec = vec3(radius, radius, radius);
+            bbox = aabb(center - rvec, center + rvec);
+        }
+
+        // Moving Sphere find motion blur in Ch.2 and sphere constructor in 3.5
 
         bool hit(const ray& r, interval ray_t, hit_record& rec) const override {
             vec3 oc = center - r.origin();
@@ -37,10 +44,13 @@ class sphere : public hittable {
             return true;
         }
 
+        aabb bounding_box() const override { return bbox; }
+
     private:
         point3 center;
         double radius;
         shared_ptr<material> mat;
+        aabb bbox;
 };
 
 #endif
